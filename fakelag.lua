@@ -45,7 +45,7 @@ local function fakelag()
             myEnt:SetAbsOrigin(pos)
         end
     else 
-        myEnt:Release()
+        myEnt:Release()-- may cause errors, ignore
         myEnt = nil
     end
 end
@@ -58,7 +58,7 @@ local function onDrawModel( drawModelContext )
     local model = drawModelContext:GetModelName()
 
     if entity == myEnt then
-        drawModelContext:ForcedMaterialOverride ( chams )
+        drawModelContext:ForcedMaterialOverride ( chams ) -- retarded chams
         chams:SetShaderParam( "$envmaptint", Vector3(255, 0, 255) )
         chams:SetShaderParam( "$color2", Vector3(255, 0, 255) )
     end
