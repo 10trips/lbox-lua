@@ -27,17 +27,18 @@ local m1 = {
 local chams = m1[1]
 
 gui.SetValue("Fake Lag", 1);
-local fakelagvalue = gui.GetValue("Fake Lag Value (ms)") / 1000;
 
 local function fakelag()
     if gui.GetValue("Thirdperson") == 1 then
         local me = entities.GetLocalPlayer()
+        local primaryWeapon = me:GetEntityForLoadoutSlot( LOADOUT_POSITION_PRIMARY )
+
         if myEnt == nil then
             myEnt = entities.CreateEntityByName( "grenade" )
             myEnt:SetModel( "models/player/sniper.mdl" )
         end
 
-        if globals.RealTime() % fakelagvalue <= 0.008 then
+        if (clientstate.GetChokedCommands() == 0) then
             pos = me:GetAbsOrigin()
         end
 
@@ -45,7 +46,7 @@ local function fakelag()
             myEnt:SetAbsOrigin(pos)
         end
     else 
-        myEnt:Release()-- may cause errors, ignore
+        myEnt:Release()
         myEnt = nil
     end
 end
@@ -58,7 +59,7 @@ local function onDrawModel( drawModelContext )
     local model = drawModelContext:GetModelName()
 
     if entity == myEnt then
-        drawModelContext:ForcedMaterialOverride ( chams ) -- retarded chams
+        drawModelContext:ForcedMaterialOverride ( chams )
         chams:SetShaderParam( "$envmaptint", Vector3(255, 0, 255) )
         chams:SetShaderParam( "$color2", Vector3(255, 0, 255) )
     end
